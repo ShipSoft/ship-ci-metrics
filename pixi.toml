@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
+[workspace]
+name = "ship-ci-metrics"
+description = "CI tooling for extracting, comparing, and rendering SHiP physics metrics"
+channels = ["https://prefix.dev/ship", "conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.13.*"
+# PyROOT for the extract/render entry points and their tests. The Python
+# package itself deliberately does not declare ROOT as a dependency.
+root_base = "*"
+pyyaml = "*"
+pytest = "*"
+
+[pypi-dependencies]
+ship-ci-metrics = { path = ".", editable = true }
+
+[tasks]
+test = "pytest -v"
+
+# Linting / formatting toolchain. prek orchestrates the hooks; the tools come
+# from this environment so versions are tracked in pixi.lock and run identically
+# everywhere (including NixOS). See .pre-commit-config.yaml.
+[feature.lint.dependencies]
+prek = "*"
+python = ">=3.11"
+ruff = "*"
+codespell = "*"
+reuse = "*"
+cffconvert = "*"
+commitizen = "*"
+
+[feature.lint.tasks]
+lint = "prek run --all-files"
+# Install the git hooks and route them through `pixi run` so the conda-provided
+# hook tools are on PATH at commit time (required on NixOS, where the tools are
+# not runnable without pixi activation).
+install-hooks = '''
+prek install --hook-type pre-commit --hook-type commit-msg
+hooks=$(git rev-parse --git-path hooks)
+sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/pre-commit"
+sed -i 's#"$PREK" hook-impl#pixi run -e lint prek hook-impl#' "$hooks/commit-msg"
+'''
+
+[environments]
+default = { solve-group = "default" }
+lint = { features = ["lint"], solve-group = "lint" }

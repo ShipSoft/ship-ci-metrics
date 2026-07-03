@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: ship-ci-metrics
+version: 0.1.0
+date-released: "2026-07-03"
+url: https://github.com/ShipSoft/ship-ci-metrics
+repository-code: https://github.com/ShipSoft/ship-ci-metrics
+type: software
+license: LGPL-3.0-or-later
+authors:
+  - name: The SHiP Collaboration
+abstract: CI tooling for the SHiP experiment that extracts lightweight physics metrics from ROOT files, compares them across commits, renders validation plots, and summarises the results in pull request comments.
+keywords:
+  - physics
+  - particle-physics
+  - continuous-integration
+  - validation
+  - SHiP
+  - ROOT

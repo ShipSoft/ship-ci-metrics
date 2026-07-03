@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ship-ci-metrics"
+version = "0.1.0"
+description = "CI tooling for extracting, comparing, and rendering SHiP physics metrics"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
+license-files = ["LICENSES/*.txt"]
+authors = [{ name = "The SHiP Collaboration" }]
+requires-python = ">=3.11"
+dependencies = ["pyyaml"]
+
+[project.urls]
+Repository = "https://github.com/ShipSoft/ship-ci-metrics"
+
+[project.scripts]
+ship-metrics-extract = "ship_ci_metrics.extract:main"
+ship-metrics-compare = "ship_ci_metrics.compare:main"
+ship-metrics-render = "ship_ci_metrics.render:main"
+ship-metrics-pr-comment = "ship_ci_metrics.pr_comment:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["B", "C4", "E", "F", "I", "RUF", "SIM", "UP", "W"]
+# σ is deliberate notation in comparison output ("23.6σ"), not a typo for "o".
+allowed-confusables = ["σ"]
+
+[tool.codespell]
+skip = "pixi.lock"
+# "gaus" is ROOT's built-in Gaussian fit function name.
+ignore-words-list = "gaus"
