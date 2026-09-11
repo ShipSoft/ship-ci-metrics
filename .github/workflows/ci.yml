@@ -3,6 +3,7 @@
 
 name: CI
 on:
+  merge_group:
   pull_request:
     branches: [main]
   push:
@@ -16,3 +17,16 @@ jobs:
     uses: ShipSoft/.github/.github/workflows/pixi-cmake-build.yml@main
     with:
       tasks: '["test"]'
+
+  all-checks:
+    name: All checks passed
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Check status of all jobs
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs failed or were cancelled"
+            exit 1
+          fi
