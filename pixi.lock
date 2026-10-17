@@ -9,7 +9,7 @@ platforms:
 environments:
   default:
     channels:
-    - url: https://prefix.dev/ship/
+    - url: https://prefix.dev/ship-experiment/stable/
     - url: https://conda.anaconda.org/conda-forge/
     indexes:
     - https://pypi.org/simple
@@ -199,7 +199,7 @@ environments:
       - pypi: ./
   lint:
     channels:
-    - url: https://prefix.dev/ship/
+    - url: https://prefix.dev/ship-experiment/stable/
     - url: https://conda.anaconda.org/conda-forge/
     indexes:
     - https://pypi.org/simple
